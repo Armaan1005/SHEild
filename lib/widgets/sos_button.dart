@@ -79,7 +79,7 @@ class _SOSButtonState extends State<SOSButton>
                       height: widget.size + 40,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColors.accent.withValues(alpha: 0.1),
+                        color: AppColors.primary.withValues(alpha: 0.08),
                       ),
                     ),
                   ),
@@ -91,7 +91,7 @@ class _SOSButtonState extends State<SOSButton>
                       height: widget.size + 20,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColors.accent.withValues(alpha: 0.15),
+                        color: AppColors.primary.withValues(alpha: 0.12),
                       ),
                     ),
                   ),
@@ -105,13 +105,13 @@ class _SOSButtonState extends State<SOSButton>
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
-                          AppColors.accent,
-                          Color(0xFFDC2626),
+                          Color(0xFFE11D48),
+                          Color(0xFFBE123C),
                         ],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.accent.withValues(alpha: 0.4),
+                          color: AppColors.primary.withValues(alpha: 0.4),
                           blurRadius: 30,
                           spreadRadius: 5,
                         ),

@@ -25,7 +25,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       title: 'Share Location',
       description:
           'Share your real-time location with trusted contacts. Track your route and alert others when you need help.',
-      color: AppColors.accent,
+      color: AppColors.accentLight,
     ),
     _OnboardingData(
       icon: Icons.emergency_outlined,
@@ -49,11 +49,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            // Skip button
             Align(
               alignment: Alignment.topRight,
               child: TextButton(
-                onPressed: () => Navigator.pushReplacementNamed(context, '/home'),
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, '/home'),
                 child: const Text(
                   'Skip',
                   style: TextStyle(
@@ -63,7 +63,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
             ),
-            // Page view
             Expanded(
               child: PageView.builder(
                 controller: _controller,
@@ -76,15 +75,18 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Icon with glow
                         Container(
-                          padding: const EdgeInsets.all(32),
+                          padding: const EdgeInsets.all(36),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: page.color.withValues(alpha: 0.15),
+                            color: page.color.withValues(alpha: 0.1),
+                            border: Border.all(
+                              color: page.color.withValues(alpha: 0.2),
+                              width: 1,
+                            ),
                             boxShadow: [
                               BoxShadow(
-                                color: page.color.withValues(alpha: 0.2),
+                                color: page.color.withValues(alpha: 0.15),
                                 blurRadius: 40,
                                 spreadRadius: 10,
                               ),
@@ -92,7 +94,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ),
                           child: Icon(
                             page.icon,
-                            size: 80,
+                            size: 72,
                             color: page.color,
                           ),
                         ),
@@ -103,6 +105,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             color: AppColors.text,
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
+                            letterSpacing: -0.3,
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -121,13 +124,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 },
               ),
             ),
-            // Page indicator + button
             Padding(
               padding: const EdgeInsets.all(32),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  // Dots
                   Row(
                     children: List.generate(
                       _pages.length,
@@ -145,7 +146,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                     ),
                   ),
-                  // Next / Get Started
                   GestureDetector(
                     onTap: () {
                       if (_currentPage < _pages.length - 1) {
@@ -164,7 +164,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [AppColors.primary, AppColors.primaryLight],
+                          colors: [
+                            AppColors.primary,
+                            AppColors.primaryLight,
+                          ],
                         ),
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [

@@ -13,8 +13,10 @@ class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
   late AnimationController _fadeController;
   late AnimationController _scaleController;
+  late AnimationController _glowController;
   late Animation<double> _fadeAnimation;
   late Animation<double> _scaleAnimation;
+  late Animation<double> _glowAnimation;
 
   @override
   void initState() {
@@ -30,12 +32,21 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 1200),
     );
 
+    _glowController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2000),
+    )..repeat(reverse: true);
+
     _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(parent: _fadeController, curve: Curves.easeIn),
     );
 
     _scaleAnimation = Tween<double>(begin: 0.5, end: 1.0).animate(
       CurvedAnimation(parent: _scaleController, curve: Curves.elasticOut),
+    );
+
+    _glowAnimation = Tween<double>(begin: 0.3, end: 0.7).animate(
+      CurvedAnimation(parent: _glowController, curve: Curves.easeInOut),
     );
 
     _fadeController.forward();
@@ -52,6 +63,7 @@ class _SplashScreenState extends State<SplashScreen>
   void dispose() {
     _fadeController.dispose();
     _scaleController.dispose();
+    _glowController.dispose();
     super.dispose();
   }
 
@@ -67,49 +79,64 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Shield icon with glow
-                Container(
-                  padding: const EdgeInsets.all(28),
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [
-                        AppColors.primary,
-                        AppColors.accent,
-                      ],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withValues(alpha: 0.4),
-                        blurRadius: 40,
-                        spreadRadius: 10,
+                // Shield icon with animated glow
+                AnimatedBuilder(
+                  animation: _glowAnimation,
+                  builder: (context, child) {
+                    return Container(
+                      padding: const EdgeInsets.all(28),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: const LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFE11D48),
+                            Color(0xFFBE123C),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary
+                                .withValues(alpha: _glowAnimation.value),
+                            blurRadius: 50,
+                            spreadRadius: 15,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.shield,
-                    size: 64,
-                    color: Colors.white,
-                  ),
+                      child: const Icon(
+                        Icons.shield,
+                        size: 64,
+                        color: Colors.white,
+                      ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 32),
-                const Text(
-                  AppConstants.appName,
-                  style: TextStyle(
-                    color: AppColors.text,
-                    fontSize: 40,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 6,
+                const SizedBox(height: 36),
+                // App name with subtle red gradient text
+                ShaderMask(
+                  shaderCallback: (bounds) => const LinearGradient(
+                    colors: [
+                      Color(0xFFFAFAFA),
+                      Color(0xFFFB7185),
+                    ],
+                  ).createShader(bounds),
+                  child: const Text(
+                    AppConstants.appName,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 42,
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 6,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
-                Text(
+                const Text(
                   AppConstants.appTagline,
                   style: TextStyle(
                     color: AppColors.textSecondary,
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w400,
                     letterSpacing: 2,
                   ),

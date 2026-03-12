@@ -1,18 +1,31 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const Color background = Color(0xFF0F172A);
-  static const Color surface = Color(0xFF1E293B);
-  static const Color surfaceLight = Color(0xFF334155);
-  static const Color primary = Color(0xFF6366F1);
-  static const Color primaryLight = Color(0xFF818CF8);
-  static const Color accent = Color(0xFFF43F5E);
-  static const Color accentLight = Color(0xFFFB7185);
-  static const Color text = Color(0xFFF8FAFC);
-  static const Color textSecondary = Color(0xFF94A3B8);
-  static const Color success = Color(0xFF10B981);
-  static const Color warning = Color(0xFFF59E0B);
-  static const Color cardBg = Color(0xFF1E293B);
+  // Deep, warm darks instead of navy
+  static const Color background = Color(0xFF0A0A0A);
+  static const Color surface = Color(0xFF161616);
+  static const Color surfaceLight = Color(0xFF242424);
+
+  // Rose-red primary palette
+  static const Color primary = Color(0xFFE11D48);
+  static const Color primaryLight = Color(0xFFFB7185);
+
+  // Warm coral accent
+  static const Color accent = Color(0xFFFF3B5C);
+  static const Color accentLight = Color(0xFFFF6B81);
+
+  // Warm neutrals for text
+  static const Color text = Color(0xFFFAFAFA);
+  static const Color textSecondary = Color(0xFFA3A3A3);
+
+  // Semantic colors
+  static const Color success = Color(0xFF22C55E);
+  static const Color warning = Color(0xFFEAB308);
+  static const Color cardBg = Color(0xFF161616);
+
+  // Gradient helpers
+  static const Color gradientStart = Color(0xFFE11D48);
+  static const Color gradientEnd = Color(0xFFFF6B81);
 }
 
 class AppTheme {
@@ -36,6 +49,7 @@ class AppTheme {
           color: AppColors.text,
           fontSize: 20,
           fontWeight: FontWeight.w600,
+          letterSpacing: 0.3,
         ),
         iconTheme: IconThemeData(color: AppColors.text),
       ),
@@ -66,11 +80,13 @@ class AppTheme {
           color: AppColors.text,
           fontSize: 32,
           fontWeight: FontWeight.bold,
+          letterSpacing: -0.5,
         ),
         headlineMedium: TextStyle(
           color: AppColors.text,
           fontSize: 24,
           fontWeight: FontWeight.w600,
+          letterSpacing: -0.3,
         ),
         titleLarge: TextStyle(
           color: AppColors.text,

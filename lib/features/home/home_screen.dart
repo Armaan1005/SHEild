@@ -65,10 +65,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 16),
-                // Top bar
                 _buildTopBar(),
                 const SizedBox(height: 24),
-                // Safety status card
                 _buildSafetyStatus(),
                 const SizedBox(height: 32),
                 // SOS Button
@@ -100,7 +98,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                 const SizedBox(height: 16),
                 _buildQuickActions(),
                 const SizedBox(height: 24),
-                // Additional actions row
                 _buildSecondaryActions(),
                 const SizedBox(height: 32),
               ],
@@ -127,24 +124,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             ),
             const SizedBox(height: 4),
             const Text(
-              'Stay Safe 💜',
+              'Stay Safe ❤️',
               style: TextStyle(
                 color: AppColors.text,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
+                letterSpacing: -0.3,
               ),
             ),
           ],
         ),
         Row(
           children: [
-            // Stealth mode
             _buildIconButton(
               Icons.calculate_outlined,
               onTap: () => Navigator.pushNamed(context, '/stealth'),
             ),
             const SizedBox(width: 8),
-            // Settings
             _buildIconButton(
               Icons.settings_outlined,
               onTap: () => Navigator.pushNamed(context, '/settings'),
@@ -163,6 +159,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppColors.surfaceLight.withValues(alpha: 0.5),
+            width: 0.5,
+          ),
         ),
         child: Icon(icon, color: AppColors.textSecondary, size: 22),
       ),
@@ -171,37 +171,30 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
   Widget _buildSafetyStatus() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.primary.withValues(alpha: 0.2),
-            AppColors.accent.withValues(alpha: 0.1),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.3),
+          color: AppColors.success.withValues(alpha: 0.2),
           width: 1,
         ),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: AppColors.success.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(14),
+              color: AppColors.success.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: const Icon(
               Icons.verified_user,
               color: AppColors.success,
-              size: 28,
+              size: 24,
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: 14),
           const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -210,11 +203,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                   'Safety Active',
                   style: TextStyle(
                     color: AppColors.success,
-                    fontSize: 16,
+                    fontSize: 15,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                SizedBox(height: 4),
+                SizedBox(height: 3),
                 Text(
                   'Shake detection & SOS ready',
                   style: TextStyle(
@@ -256,13 +249,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         ActionCard(
           icon: Icons.location_on_outlined,
           label: 'Live\nLocation',
-          color: AppColors.primary,
+          color: const Color(0xFFFF6B81),
           onTap: () => Navigator.pushNamed(context, '/location'),
         ),
         ActionCard(
           icon: Icons.phone_outlined,
           label: 'Fake\nCall',
-          color: AppColors.accent,
+          color: const Color(0xFFF97316),
           onTap: () => Navigator.pushNamed(context, '/fake-call'),
         ),
         ActionCard(
@@ -297,23 +290,23 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.accent.withValues(alpha: 0.15),
+                color: AppColors.primary.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: AppColors.accent.withValues(alpha: 0.3),
+                  color: AppColors.primary.withValues(alpha: 0.25),
                 ),
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.call, color: AppColors.accent, size: 20),
+                  Icon(Icons.call, color: AppColors.primary, size: 20),
                   SizedBox(width: 8),
                   Text(
                     'Emergency Call',
                     style: TextStyle(
-                      color: AppColors.accent,
+                      color: AppColors.primary,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                      fontSize: 13,
                     ),
                   ),
                 ],
@@ -328,23 +321,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             child: Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primary.withValues(alpha: 0.15),
+                color: AppColors.surfaceLight.withValues(alpha: 0.5),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: AppColors.primary.withValues(alpha: 0.3),
+                  color: AppColors.surfaceLight,
                 ),
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.support_agent, color: AppColors.primary, size: 20),
+                  Icon(Icons.support_agent,
+                      color: AppColors.textSecondary, size: 20),
                   SizedBox(width: 8),
                   Text(
                     'Helpline',
                     style: TextStyle(
-                      color: AppColors.primary,
+                      color: AppColors.textSecondary,
                       fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                      fontSize: 13,
                     ),
                   ),
                 ],
