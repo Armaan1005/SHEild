@@ -37,6 +37,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     super.dispose();
   }
 
+  void _showSnack(String msg) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(msg),
+        backgroundColor: AppColors.success,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final settings = ref.watch(settingsProvider);
@@ -59,12 +70,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         color: AppColors.surface,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new,
+                      child: Icon(Icons.arrow_back_ios_new,
                           color: AppColors.text, size: 18),
                     ),
                   ),
                   const SizedBox(width: 16),
-                  const Text(
+                  Text(
                     'Settings',
                     style: TextStyle(
                       color: AppColors.text,
@@ -118,16 +129,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                                       _nameController.text,
                                       _numberController.text,
                                     );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: const Text('Contact saved!'),
-                                    backgroundColor: AppColors.success,
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                );
+                                _showSnack('Contact saved!');
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primary,
@@ -169,16 +171,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                                 ref
                                     .read(settingsProvider.notifier)
                                     .updateStealthPin(_pinController.text);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: const Text('PIN updated!'),
-                                    backgroundColor: AppColors.success,
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                );
+                                _showSnack('PIN updated!');
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primary,
@@ -209,7 +202,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             controller: _callerController,
                             label: 'Caller Name',
                             icon: Icons.person_outline,
-                            hint: 'e.g. Mom, Office, Friend',
+                            hint: 'e.g. Mom, Office',
                           ),
                           const SizedBox(height: 16),
                           SizedBox(
@@ -220,17 +213,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                                     .read(settingsProvider.notifier)
                                     .updateFakeCallerName(
                                         _callerController.text);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        const Text('Caller name updated!'),
-                                    backgroundColor: AppColors.success,
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                );
+                                _showSnack('Caller name updated!');
                               },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: AppColors.primary,
@@ -258,14 +241,15 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         children: [
                           SwitchListTile(
                             value: settings.shakeEnabled,
-                            onChanged: (v) =>
-                                ref.read(settingsProvider.notifier).toggleShake(v),
-                            title: const Text(
+                            onChanged: (v) => ref
+                                .read(settingsProvider.notifier)
+                                .toggleShake(v),
+                            title: Text(
                               'Shake to SOS',
                               style: TextStyle(
                                   color: AppColors.text, fontSize: 14),
                             ),
-                            subtitle: const Text(
+                            subtitle: Text(
                               'Shake phone to trigger SOS',
                               style: TextStyle(
                                   color: AppColors.textSecondary,
@@ -284,12 +268,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                             onChanged: (v) => ref
                                 .read(settingsProvider.notifier)
                                 .toggleVoiceTrigger(v),
-                            title: const Text(
+                            title: Text(
                               'Voice Trigger',
                               style: TextStyle(
                                   color: AppColors.text, fontSize: 14),
                             ),
-                            subtitle: const Text(
+                            subtitle: Text(
                               'Say "help me" to trigger SOS',
                               style: TextStyle(
                                   color: AppColors.textSecondary,
@@ -308,7 +292,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     Center(
                       child: Column(
                         children: [
-                          const Text(
+                          Text(
                             'SHEild v1.0.0',
                             style: TextStyle(
                               color: AppColors.textSecondary,
@@ -346,7 +330,7 @@ class _SectionTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         color: AppColors.textSecondary,
         fontSize: 13,
         fontWeight: FontWeight.w600,
@@ -376,12 +360,11 @@ class _SettingsField extends StatelessWidget {
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
-      style: const TextStyle(color: AppColors.text, fontSize: 14),
+      style: TextStyle(color: AppColors.text, fontSize: 14),
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        labelStyle:
-            const TextStyle(color: AppColors.textSecondary, fontSize: 13),
+        labelStyle: TextStyle(color: AppColors.textSecondary, fontSize: 13),
         hintStyle: TextStyle(
           color: AppColors.surfaceLight,
           fontSize: 13,
@@ -395,8 +378,7 @@ class _SettingsField extends StatelessWidget {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide:
-              const BorderSide(color: AppColors.primary, width: 1),
+          borderSide: BorderSide(color: AppColors.primary, width: 1),
         ),
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

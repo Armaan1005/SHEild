@@ -79,7 +79,6 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Shield icon with animated glow
                 AnimatedBuilder(
                   animation: _glowAnimation,
                   builder: (context, child) {
@@ -87,12 +86,12 @@ class _SplashScreenState extends State<SplashScreen>
                       padding: const EdgeInsets.all(28),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
-                            Color(0xFFE11D48),
-                            Color(0xFFBE123C),
+                            AppColors.primary,
+                            AppColors.primary.withValues(alpha: 0.8),
                           ],
                         ),
                         boxShadow: [
@@ -113,12 +112,11 @@ class _SplashScreenState extends State<SplashScreen>
                   },
                 ),
                 const SizedBox(height: 36),
-                // App name with subtle red gradient text
                 ShaderMask(
-                  shaderCallback: (bounds) => const LinearGradient(
+                  shaderCallback: (bounds) => LinearGradient(
                     colors: [
-                      Color(0xFFFAFAFA),
-                      Color(0xFFFB7185),
+                      AppColors.text,
+                      AppColors.primaryLight,
                     ],
                   ).createShader(bounds),
                   child: const Text(
@@ -132,7 +130,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   AppConstants.appTagline,
                   style: TextStyle(
                     color: AppColors.textSecondary,

@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geolocator/geolocator.dart';
 
@@ -8,6 +9,32 @@ class AppUtils {
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     }
+  }
+
+  /// Send SMS with pre-composed message
+  static Future<void> sendEmergencySMS({
+    required List<String> numbers,
+    required String message,
+  }) async {
+    for (final number in numbers) {
+      final uri = Uri(
+        scheme: 'sms',
+        path: number,
+        queryParameters: {'body': message},
+      );
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri);
+        break; // Open SMS app once with first number
+      }
+    }
+  }
+
+  /// Build emergency SMS message with location
+  static String buildEmergencyMessage({double? lat, double? lng}) {
+    final locationStr = lat != null && lng != null
+        ? '\n📍 Location: https://www.google.com/maps?q=$lat,$lng'
+        : '';
+    return '🚨 EMERGENCY ALERT from SHEild!\n\nI need help immediately. This is an automated safety alert.$locationStr\n\nPlease call me or send help!';
   }
 
   /// Open a URL in browser
@@ -61,5 +88,19 @@ class AppUtils {
     final m = (seconds ~/ 60).toString().padLeft(2, '0');
     final s = (seconds % 60).toString().padLeft(2, '0');
     return '$m:$s';
+  }
+
+  /// Haptic feedback helpers
+  static void hapticLight() => HapticFeedback.lightImpact();
+  static void hapticMedium() => HapticFeedback.mediumImpact();
+  static void hapticHeavy() => HapticFeedback.heavyImpact();
+  static void hapticSOS() {
+    HapticFeedback.heavyImpact();
+    Future.delayed(const Duration(milliseconds: 100), () {
+      HapticFeedback.heavyImpact();
+    });
+    Future.delayed(const Duration(milliseconds: 200), () {
+      HapticFeedback.heavyImpact();
+    });
   }
 }

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import '../core/theme.dart';
+import '../core/utils.dart';
 
 class ActionCard extends StatefulWidget {
   final IconData icon;
   final String label;
-  final Color? color;
+  final Color color;
   final VoidCallback onTap;
 
   const ActionCard({
     super.key,
     required this.icon,
     required this.label,
-    this.color,
+    required this.color,
     required this.onTap,
   });
 
@@ -44,11 +45,11 @@ class _ActionCardState extends State<ActionCard>
 
   @override
   Widget build(BuildContext context) {
-    final color = widget.color ?? AppColors.primary;
     return GestureDetector(
       onTapDown: (_) => _controller.forward(),
       onTapUp: (_) {
         _controller.reverse();
+        AppUtils.hapticLight();
         widget.onTap();
       },
       onTapCancel: () => _controller.reverse(),
@@ -59,7 +60,7 @@ class _ActionCardState extends State<ActionCard>
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: color.withValues(alpha: 0.2),
+              color: widget.color.withValues(alpha: 0.15),
               width: 1,
             ),
           ),
@@ -67,25 +68,26 @@ class _ActionCardState extends State<ActionCard>
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: const EdgeInsets.all(14),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(16),
+                  color: widget.color.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
                   widget.icon,
-                  color: color,
-                  size: 28,
+                  color: widget.color,
+                  size: 24,
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 10),
               Text(
                 widget.label,
                 textAlign: TextAlign.center,
-                style: const TextStyle(
+                style: TextStyle(
                   color: AppColors.text,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  height: 1.3,
                 ),
               ),
             ],

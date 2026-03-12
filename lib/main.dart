@@ -12,16 +12,18 @@ import 'features/recorder/recorder_screen.dart';
 import 'features/fake_call/fake_call_screen.dart';
 import 'features/safety_tips/safety_tips_screen.dart';
 import 'features/settings/settings_screen.dart';
+import 'features/trusted_contacts/trusted_contacts_screen.dart';
+import 'features/journey_timer/journey_timer_screen.dart';
+import 'features/safe_walk/safe_walk_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Force dark status bar
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: AppColors.background,
+      systemNavigationBarColor: Color(0xFF0A0A0A),
       systemNavigationBarIconBrightness: Brightness.light,
     ),
   );
@@ -54,6 +56,9 @@ class SHEildApp extends StatelessWidget {
         '/fake-call': (context) => const FakeCallScreen(),
         '/safety-tips': (context) => const SafetyTipsScreen(),
         '/settings': (context) => const SettingsScreen(),
+        '/trusted-contacts': (context) => const TrustedContactsScreen(),
+        '/journey-timer': (context) => const JourneyTimerScreen(),
+        '/safe-walk': (context) => const SafeWalkScreen(),
       },
     );
   }

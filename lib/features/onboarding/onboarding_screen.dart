@@ -8,9 +8,13 @@ class OnboardingScreen extends StatefulWidget {
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState extends State<OnboardingScreen>
+    with TickerProviderStateMixin {
   final PageController _controller = PageController();
   int _currentPage = 0;
+
+  late AnimationController _iconAnimController;
+  late Animation<double> _iconBounce;
 
   final List<_OnboardingData> _pages = [
     _OnboardingData(
@@ -18,27 +22,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       title: 'Stay Protected',
       description:
           'SHEild is your personal safety companion that keeps you protected at all times with instant emergency features.',
-      color: AppColors.primary,
     ),
     _OnboardingData(
       icon: Icons.location_on_outlined,
       title: 'Share Location',
       description:
-          'Share your real-time location with trusted contacts. Track your route and alert others when you need help.',
-      color: AppColors.accentLight,
+          'Share your real-time location with trusted contacts. Track your route and alert others instantly.',
     ),
     _OnboardingData(
       icon: Icons.emergency_outlined,
       title: 'One-Tap SOS',
       description:
-          'Trigger SOS with one tap, shake, or voice command. Record evidence and alert your emergency contacts instantly.',
-      color: AppColors.success,
+          'Trigger SOS with one tap, shake, or panic pattern. Record evidence and alert your contacts.',
     ),
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _iconAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat(reverse: true);
+
+    _iconBounce = Tween<double>(begin: 0, end: 12).animate(
+      CurvedAnimation(parent: _iconAnimController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
+    _iconAnimController.dispose();
     super.dispose();
   }
 
@@ -54,7 +69,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               child: TextButton(
                 onPressed: () =>
                     Navigator.pushReplacementNamed(context, '/home'),
-                child: const Text(
+                child: Text(
                   'Skip',
                   style: TextStyle(
                     color: AppColors.textSecondary,
@@ -70,38 +85,55 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 itemCount: _pages.length,
                 itemBuilder: (context, index) {
                   final page = _pages[index];
+                  // Color per page
+                  final colors = [
+                    AppColors.primary,
+                    AppColors.primaryLight,
+                    AppColors.success,
+                  ];
+                  final color = colors[index % colors.length];
+
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(36),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: page.color.withValues(alpha: 0.1),
-                            border: Border.all(
-                              color: page.color.withValues(alpha: 0.2),
-                              width: 1,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: page.color.withValues(alpha: 0.15),
-                                blurRadius: 40,
-                                spreadRadius: 10,
+                        // Animated floating icon
+                        AnimatedBuilder(
+                          animation: _iconBounce,
+                          builder: (context, child) {
+                            return Transform.translate(
+                              offset: Offset(0, -_iconBounce.value),
+                              child: Container(
+                                padding: const EdgeInsets.all(36),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: color.withValues(alpha: 0.1),
+                                  border: Border.all(
+                                    color: color.withValues(alpha: 0.2),
+                                    width: 1,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: color.withValues(alpha: 0.15),
+                                      blurRadius: 40,
+                                      spreadRadius: 10,
+                                    ),
+                                  ],
+                                ),
+                                child: Icon(
+                                  page.icon,
+                                  size: 72,
+                                  color: color,
+                                ),
                               ),
-                            ],
-                          ),
-                          child: Icon(
-                            page.icon,
-                            size: 72,
-                            color: page.color,
-                          ),
+                            );
+                          },
                         ),
                         const SizedBox(height: 48),
                         Text(
                           page.title,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppColors.text,
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
@@ -112,7 +144,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(
                           page.description,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
+                          style: TextStyle(
                             color: AppColors.textSecondary,
                             fontSize: 16,
                             height: 1.5,
@@ -163,7 +195,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         vertical: 16,
                       ),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
+                        gradient: LinearGradient(
                           colors: [
                             AppColors.primary,
                             AppColors.primaryLight,
@@ -214,12 +246,10 @@ class _OnboardingData {
   final IconData icon;
   final String title;
   final String description;
-  final Color color;
 
   _OnboardingData({
     required this.icon,
     required this.title,
     required this.description,
-    required this.color,
   });
 }
