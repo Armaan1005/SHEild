@@ -1,4 +1,5 @@
 # sheild_app
+for AcceleratorX hackathon
 
 A new Flutter project.
 
